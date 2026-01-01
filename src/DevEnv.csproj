@@ -8,4 +8,8 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="R3" />
+  </ItemGroup>
+
 </Project>
