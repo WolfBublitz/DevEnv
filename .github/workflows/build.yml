@@ -15,6 +15,9 @@ jobs:
           - os: ubuntu-latest
             runtime: linux-x64
             artifact: DevEnv-linux-x64
+          - os: ubuntu-latest
+            runtime: linux-arm64
+            artifact: DevEnv-linux-arm64
           - os: windows-latest
             runtime: win-x64
             artifact: DevEnv-win-x64.exe
@@ -23,7 +26,6 @@ jobs:
             artifact: DevEnv-osx-x64
     
     runs-on: ${{ matrix.os }}
-    container: ${{ matrix.container }}
     
     steps:
     - uses: actions/checkout@v4
