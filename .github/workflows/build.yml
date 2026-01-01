@@ -14,7 +14,15 @@ jobs:
         include:
           - os: ubuntu-latest
             runtime: linux-x64
-            artifact: DevEnv-linux-x64
+            artifact: DevEnv-ubuntu-x64
+          - os: ubuntu-latest
+            runtime: linux-x64
+            artifact: DevEnv-fedora-x64
+            container: fedora:latest
+          - os: ubuntu-latest
+            runtime: linux-x64
+            artifact: DevEnv-opensuse-x64
+            container: opensuse/leap:latest
           - os: windows-latest
             runtime: win-x64
             artifact: DevEnv-win-x64.exe
@@ -23,6 +31,7 @@ jobs:
             artifact: DevEnv-osx-x64
     
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
     
     steps:
     - uses: actions/checkout@v4
