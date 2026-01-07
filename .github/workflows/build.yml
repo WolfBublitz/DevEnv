@@ -61,4 +61,4 @@ jobs:
     - name: Run tests
       run: |
         cd tests/PackageManagerTests/HomebrewTests/src
-        dotnet test --configuration Debug
+        dotnet run --configuration Debug
