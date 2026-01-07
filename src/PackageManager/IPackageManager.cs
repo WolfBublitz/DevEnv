@@ -7,6 +7,8 @@ public interface IPackageManager
 {
     public string Name { get; }
 
+    public Task<bool> VerifyAsync(CancellationToken cancellationToken);
+
     public Task UpdateAsync(CancellationToken cancellationToken);
 
     public Task UpdatePackageAsync(string packageName, CancellationToken cancellationToken);

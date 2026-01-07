@@ -8,6 +8,15 @@ public sealed class HomebrewPackageManager : IPackageManager
 {
     public string Name { get; } = "Homebrew";
 
+    public async Task<bool> VerifyAsync(CancellationToken cancellationToken)
+    {
+        Process process = new("brew", "--version");
+
+        int exitCode = await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+
+        return exitCode == 0;
+    }
+
     public Task InstallPackageAsync(string packageName, CancellationToken cancellationToken)
     {
         Process process = new("brew", "install", packageName);
