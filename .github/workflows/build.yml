@@ -47,7 +47,7 @@ jobs:
         name: ${{ matrix.artifact }}
         path: src/bin/Release/net10.0/${{ matrix.runtime }}/publish/
   
-  test:
+  homebrew-tests:
     runs-on: macos-latest
     
     steps:
