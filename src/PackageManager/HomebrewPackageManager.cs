@@ -6,33 +6,44 @@ namespace DevEnv;
 
 public sealed class HomebrewPackageManager : IPackageManager
 {
-    public string Name { get; } = "Homebrew";
+    public string Name { get; internal set; } = "Homebrew";
+
+    internal string ExecutablePath { get; set; } = "brew";
 
     public async Task<bool> VerifyAsync(CancellationToken cancellationToken)
     {
-        Process process = new("brew", "--version");
+        try
+        {
+            Process process = new(ExecutablePath, "--version");
 
-        int exitCode = await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+            // Attempt to start the process to check if the executable exists
+            await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
 
-        return exitCode == 0;
+            return true;
+        }
+        catch (Exception)
+        {
+            // If starting the process fails, Homebrew is not installed
+            return false;
+        }
     }
 
     public Task InstallPackageAsync(string packageName, CancellationToken cancellationToken)
     {
-        Process process = new("brew", "install", packageName);
+        Process process = new(ExecutablePath, "install", packageName);
 
         return process.ExecuteAsync(cancellationToken);
     }
 
     public Task UpdateAsync(CancellationToken cancellationToken)
     {
-        Process process = new("brew", "update");
+        Process process = new(ExecutablePath, "update");
 
         return process.ExecuteAsync(cancellationToken);
     }
     public async Task<bool> CheckIfPackageIsInstalledAsync(string packageName,CancellationToken cancellationToken)
     {
-        Process processService = new("brew", "list", "--versions", packageName);
+        Process processService = new(ExecutablePath, "list", "--versions", packageName);
 
         int exitCode = await processService.ExecuteAsync(cancellationToken).ConfigureAwait(false);
     
