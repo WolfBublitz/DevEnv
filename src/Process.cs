@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -60,5 +61,21 @@ public sealed class Process(string command, params string[] args)
         await process.WaitForExitAsync(cancellationToken).ConfigureAwait(false);
 
         return process.ExitCode;
+    }
+
+    internal static async Task<bool> CheckIfExecutableExistsAsync(string executablePath, string[] args, CancellationToken cancellationToken)
+    {
+        Process process = new(executablePath, args);
+
+        try
+        {
+            await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
+
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }

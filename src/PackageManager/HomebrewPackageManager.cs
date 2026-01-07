@@ -10,23 +10,8 @@ public sealed class HomebrewPackageManager : IPackageManager
 
     internal string ExecutablePath { get; set; } = "brew";
 
-    public async Task<bool> VerifyAsync(CancellationToken cancellationToken)
-    {
-        try
-        {
-            Process process = new(ExecutablePath, "--version");
-
-            // Attempt to start the process to check if the executable exists
-            await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
-
-            return true;
-        }
-        catch (Exception)
-        {
-            // If starting the process fails, Homebrew is not installed
-            return false;
-        }
-    }
+    public Task<bool> VerifyAsync(CancellationToken cancellationToken)
+        => Process.CheckIfExecutableExistsAsync(ExecutablePath, ["--version"], cancellationToken);
 
     public Task InstallPackageAsync(string packageName, CancellationToken cancellationToken)
     {
