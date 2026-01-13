@@ -7,15 +7,15 @@ namespace DevEnv;
 
 internal abstract class PackageManager : IPackageManager, IDisposable
 {
-    private readonly ReplaySubject<string> stdOut = new();
+    private readonly Subject<string> stdOut = new();
 
-    private readonly ReplaySubject<string> stdErr = new();
+    private readonly Subject<string> stdErr = new();
 
     public abstract string Name { get; internal set; }
 
-    public Observable<string> StdOut => stdOut.AsObservable();
+    public Observable<string> StdOut => stdOut;
 
-    public Observable<string> StdErr => stdErr.AsObservable();
+    public Observable<string> StdErr => stdErr;
 
     public abstract Task<bool> VerifyAsync(CancellationToken cancellationToken);
 

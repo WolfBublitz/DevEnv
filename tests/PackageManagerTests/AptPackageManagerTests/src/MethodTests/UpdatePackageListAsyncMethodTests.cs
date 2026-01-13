@@ -16,7 +16,7 @@ public sealed class TheUpdatePackageListAsyncMethod
         // Arrange
         List<string> stdOut = [];
         AptPackageManager packageManager = new();
-        packageManager.StdOut.Subscribe(line => stdOut.Add(line));
+        packageManager.StdOut.Subscribe(stdOut.Add);
 
         // Act
         await packageManager.UpdatePackageListAsync(cancellationToken).ConfigureAwait(false);

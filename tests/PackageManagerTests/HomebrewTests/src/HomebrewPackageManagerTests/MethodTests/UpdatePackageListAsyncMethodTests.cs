@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,14 +15,14 @@ public sealed class TheUpdatePackageListAsyncMethod
     public async Task ShouldUpdatePackageListSuccessfully(CancellationToken cancellationToken)
     {
         // Arrange
-        List<string> stdOut = [];
+        List<string> stdError = [];
         HomebrewPackageManager packageManager = new();
-        packageManager.StdOut.Subscribe(stdOut.Add);
+        using IDisposable subscription = packageManager.StdErr.Subscribe(stdError.Add);
 
         // Act
         await packageManager.UpdatePackageListAsync(cancellationToken).ConfigureAwait(false);
 
         // Assert
-        stdOut.Last().Should().Contain("Reading package lists... Done", because: "The package list update should complete successfully.");
+        stdError.First().Should().Contain("Updating Homebrew", because: "The package list update should complete successfully.");
     }
 }

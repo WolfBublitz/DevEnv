@@ -15,24 +15,24 @@ internal sealed class AptPackageManager : PackageManager
     public sealed override Task<bool> VerifyAsync(CancellationToken cancellationToken)
         => Process.CheckIfExecutableExistsAsync(ExecutablePath, ["--version"], cancellationToken);
 
-    public sealed override Task InstallPackageAsync(string packageName, CancellationToken cancellationToken)
+    public sealed async override Task InstallPackageAsync(string packageName, CancellationToken cancellationToken)
     {
         Process process = new(ExecutablePath, "install", "-y", packageName);
 
         using IDisposable stdOutSubscription = process.StdOut.Subscribe(OnStdOut);
         using IDisposable stdErrSubscription = process.StdErr.Subscribe(OnStdErr);
 
-        return process.ExecuteAsync(cancellationToken);
+        await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public sealed override Task UpdatePackageListAsync(CancellationToken cancellationToken)
+    public sealed async override Task UpdatePackageListAsync(CancellationToken cancellationToken)
     {
         Process process = new(ExecutablePath, "update");
 
         using IDisposable stdOutSubscription = process.StdOut.Subscribe(OnStdOut);
         using IDisposable stdErrSubscription = process.StdErr.Subscribe(OnStdErr);
 
-        return process.ExecuteAsync(cancellationToken);
+        await process.ExecuteAsync(cancellationToken).ConfigureAwait(false);
     }
     public sealed override async Task<bool> CheckIfPackageIsInstalledAsync(string packageName, CancellationToken cancellationToken)
     {
